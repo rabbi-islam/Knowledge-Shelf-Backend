@@ -2,6 +2,7 @@
 const bookModel = require("../models/bookModel")
 const { throwError } = require("../utils/throwError")
 const { uploadImageHandler } = require("../utils/uploadImage")
+const cloudinary = require("../utils/cloudinaryInit")
 
 
 const addBook = async (req, res) => {
@@ -70,21 +71,25 @@ const getSingleBook = async (req, res) => {
 const deleteBook = async (req, res) => {
 
 
-    const result = await bookModel.deleteOne({ _id: req.params.id });
+    const book = await bookModel.findByIdAndDelete(req.params.id )
 
-    if (result.deletedCount === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No book found with the given ID"
-      });
+    if (book) {
+        if(book.imageKey){
+            console.log(book.imageKey)
+            const result = await cloudinary.uploader.destroy(book.imageKey)
+            console.log(result)
+        }
+    }else{
+        return res.status(200).json({
+            msg: "No Book Found"
+        })
     }
-    
-    res.status(200).json({
-      success: true,
-      message: "Book deleted successfully"
-    });
-    
-    
-}
+
+    return res.status(200).json({
+        msg: "Book Deleted"
+    })
+
+  }
+  
 
 module.exports = { addBook, getAllBook, deleteBook, getSingleBook }
