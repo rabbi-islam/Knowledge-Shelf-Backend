@@ -3,6 +3,8 @@ const { errorHandler } = require("./middleware/errorHandler")
 const app =  express()
 const bookRouter = require("./routes/bookRoute")
 const userRouter = require("./routes/userRoute")
+const orderRouter = require("./routes/orderRoute")
+
 require("./config/db")
 
 app.use(express.urlencoded({extended:true}))
@@ -10,7 +12,7 @@ app.use(express.json())
 
 app.use("/api/v1", bookRouter)
 app.use("/api/v1/auth", userRouter)
-app.use("/api/v1", userRouter)
+app.use("/api/v1/", orderRouter)
 
 
 app.get("/", (req,res)=>{

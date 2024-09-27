@@ -5,7 +5,9 @@ const getNewTokens = (user) => {
 		{
 			_id: user._id,
 			fullName: user.fullName,
-			email: user.email
+			email: user.email,
+			type: "access",
+			role:user.role
 		},
 		process.env.SECRET_KEY,
 		{
@@ -17,7 +19,9 @@ const getNewTokens = (user) => {
 		{
 			_id: user._id,
 			fullName: user.fullName,
-			email: user.email
+			email: user.email,
+			type: "refresh",
+			role:user.role
 		},
 		process.env.REFRESH_SECRET_KEY,
 		{

@@ -5,6 +5,7 @@ const checkAuth = (req, res, next) => {
 	const authHeader = req.headers["authorization"];
 	const token = authHeader && authHeader.split(" ")[1];
 
+
 	if (!token) {
 		throwError("Token is missing", 400);
 	}

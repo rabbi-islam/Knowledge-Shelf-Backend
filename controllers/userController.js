@@ -18,7 +18,6 @@ const registerUser = async (req, res, next) => {
         
         if (exits_user) throwError("User Already Exists!", 409)
         
-        
         const hashedPassword = await bcryptjs.hash(password, 10);
         
         
@@ -81,9 +80,8 @@ const loginUser = async (req, res, next) => {
 const refreshToken = async (req, res) => {
     const { refreshToken } = req.body; 
 
-    if (!refreshToken) {
-        return res.status(401).json({ success: false, message: "Refresh token is required." });
-    }
+
+    if (!refreshToken) throwError("Refresh token is required.", 401)
 
     try {
         // Verify the refresh token
@@ -113,12 +111,13 @@ const refreshToken = async (req, res) => {
 };
 
 const updateUser = async (req, res, next) => {
+
+
     if (handleValidationErrors(req, res)) return;
 
     const { fullName, email } = req.body;
     const userId = req.user._id; 
 
-    try {
         
         const user = await UserModel.findById(userId);
 
@@ -138,12 +137,6 @@ const updateUser = async (req, res, next) => {
             user: updatedUser
         });
 
-    } catch (error) {
-        console.error("Error updating user:", error);
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
+    
 };
 module.exports = { registerUser, loginUser,refreshToken,updateUser };
