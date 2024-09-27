@@ -1,6 +1,6 @@
 const bcryptjs = require('bcrypt');
-const UserModel = require("../models/userModel");
 const { throwError } = require("../utils/throwError")
+const UserModel = require("../models/userModel");
 const generateNewTokens = require("../utils/generateNewToken");
 const jwt = require("jsonwebtoken");
 const handleValidationErrors = require('../utils/validationErrorHandler');
@@ -8,20 +8,15 @@ const handleValidationErrors = require('../utils/validationErrorHandler');
 
 
 
+
 const registerUser = async (req, res, next) => {
     if (handleValidationErrors(req, res)) return;
     const { fullName, email, password } = req.body;
-    
-    try {
+
        
         let exits_user = await UserModel.findOne({ email: email }).select('-password');
         
-        if (exits_user) {
-            return res.json({
-                success: false,
-                message: "User already exists."
-            });
-        }
+        if (exits_user) throwError("User Already Exists!", 409)
         
         
         const hashedPassword = await bcryptjs.hash(password, 10);
@@ -44,9 +39,7 @@ const registerUser = async (req, res, next) => {
             user: userResponse
         });
 
-    } catch (error) {
-        return res.status(500).send(error.message);
-    }
+    
 }
 
 
@@ -55,10 +48,9 @@ const loginUser = async (req, res, next) => {
     if (handleValidationErrors(req, res)) return;
     const { email, password } = req.body;
     
-    try {
         const user = await UserModel.findOne({ email: email }).select('+password'); 
         
-        if (!user) throwError("User not found", 400)
+        if (!user) throwError("User not found",401)
 
         
         const isMatch = await bcryptjs.compare(password, user.password);
@@ -85,12 +77,7 @@ const loginUser = async (req, res, next) => {
 
         });
 
-    } catch (error) {
-        return res.status(500).send(error.message);
     }
-}
-
-
 const refreshToken = async (req, res) => {
     const { refreshToken } = req.body; 
 

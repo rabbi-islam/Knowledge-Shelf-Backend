@@ -7,8 +7,6 @@ const cloudinary = require("../utils/cloudinaryInit")
 
 const addBook = async (req, res) => {
 
-    console.log(req.file)
-
     const { name, authorName } = req.body
 
     const existingBook = await bookModel.findOne({

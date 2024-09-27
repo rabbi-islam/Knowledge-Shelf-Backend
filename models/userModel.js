@@ -1,5 +1,5 @@
 const { model, Schema, models } = require("mongoose");
-const { generateRandomAvatar } = require("../utils/RandomAvatar");
+const { generateRandomAvatar } = require("../utils/RandomAvatar.js");
 
 const registrationSchema = new Schema(
     {
