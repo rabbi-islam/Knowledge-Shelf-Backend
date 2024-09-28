@@ -10,7 +10,6 @@ const handleValidationErrors = require('../utils/validationErrorHandler');
 
 
 const registerUser = async (req, res, next) => {
-    if (handleValidationErrors(req, res)) return;
     const { fullName, email, password } = req.body;
 
        
@@ -44,7 +43,6 @@ const registerUser = async (req, res, next) => {
 
 
 const loginUser = async (req, res, next) => {
-    if (handleValidationErrors(req, res)) return;
     const { email, password } = req.body;
     
         const user = await UserModel.findOne({ email: email }).select('+password'); 
