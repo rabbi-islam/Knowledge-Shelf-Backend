@@ -32,6 +32,7 @@ const registerUser = async (req, res, next) => {
         delete userResponse.password
 
         return res.status(201).json({
+            statusCode:201,
             success: true,
             message: "Registration successful",
             user: userResponse
