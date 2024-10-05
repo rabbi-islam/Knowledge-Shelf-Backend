@@ -1,6 +1,7 @@
 const bcryptjs = require('bcrypt');
 const { throwError } = require("../utils/throwError")
 const UserModel = require("../models/userModel");
+const orderModel = require("../models/orderModel")
 const generateNewTokens = require("../utils/generateNewToken");
 const jwt = require("jsonwebtoken");
 const handleValidationErrors = require('../utils/validationErrorHandler');
@@ -48,7 +49,7 @@ const loginUser = async (req, res, next) => {
     
         const user = await UserModel.findOne({ email: email }).select('+password'); 
         
-        if (!user) throwError("User not found",401)
+        if (!user) throwError("User not found",409)
 
         
         const isMatch = await bcryptjs.compare(password, user.password);
@@ -138,4 +139,16 @@ const updateUser = async (req, res, next) => {
 
     
 };
-module.exports = { registerUser, loginUser,refreshToken,updateUser };
+const profile = async (req, res, next) => {
+
+    const history = await orderModel.find({ orderBy: req.user._id }).populate('bookId')
+    if (!history) throwError("User history found",409)
+
+    return res.status(200).json({
+        success: true,
+        user: req.user,
+        history: history
+    });
+
+}
+module.exports = { registerUser, loginUser,refreshToken,updateUser,profile };
