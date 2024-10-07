@@ -10,7 +10,7 @@ const handleValidationErrors = require("../utils/validationErrorHandler.js")
 
 router.post("/registration",validateUserReg,handleValidationErrors,catchAsync(registerUser))
 router.post("/login",validateUserLogin,handleValidationErrors, catchAsync(loginUser))
-router.post("/refresh-token", checkAuth, catchAsync(refreshToken))
+router.post("/refresh-token", catchAsync(refreshToken))
 router.patch("/profile",checkAuth,catchAsync(updateUser))
 router.get("/profile",checkAuth,catchAsync(profile))
 

@@ -1,6 +1,7 @@
 const express = require("express")
 const { errorHandler } = require("./middleware/errorHandler")
 const app =  express()
+const cors = require("cors");
 const bookRouter = require("./routes/bookRoute")
 const userRouter = require("./routes/userRoute")
 const orderRouter = require("./routes/orderRoute")
@@ -28,6 +29,15 @@ app.use((req,res, next)=>{
         message: "Wrong Route"
     })
 })
+
+
+
+app.use(
+	cors({
+		credentials: true,
+		origin: ["http://localhost:3000", "https://knowledge-shelf-frontend.vercel.app"],
+	})
+);
 
 
 //handling server error
