@@ -78,13 +78,14 @@ const deleteBook = async (req, res) => {
             console.log(result)
         }
     }else{
-        return res.status(200).json({
+        return res.status(404).json({
             msg: "No Book Found"
         })
     }
 
     return res.status(200).json({
-        msg: "Book Deleted"
+      success: true,
+      message: "Book Deleted"
     })
 
   }
