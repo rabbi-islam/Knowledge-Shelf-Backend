@@ -26,6 +26,7 @@ const addBook = async (req, res) => {
     })
 
     res.status(201).json({
+        statusCode: 201,
         success: true,
         book: newBook,
     });
